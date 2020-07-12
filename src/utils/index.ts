@@ -1,5 +1,6 @@
 import {MAX_COLS, MAX_ROW, NO_OF_BOMBS} from "../constants";
 import {Cell, CellState, CellValue} from "../types"
+import React from "react";
 
 
 export const generateCells = (): Cell[][]  => {
