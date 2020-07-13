@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.scss'
 import NumberDisplay from '../NumberDsiplay';
-import {generateCells} from "../../utils";
+import {generateCells, openMultipleCells} from "../../utils";
 import Button from '../Button/index'
 import {Face, Cell , CellState, CellValue} from '../../types'
 const App : React.FC = () => {
@@ -44,6 +44,26 @@ const App : React.FC = () => {
     const handleCellClick = (rowParam : number, colParam : number) =>  () : void =>{
        if(!live) {
            setLive(true);
+       }
+
+
+
+       const currentCell = cells[rowParam][colParam];
+       let newCells = cells.slice();
+
+       if(currentCell.state  === CellState.flagged || currentCell.state === CellState.visible){
+           return;
+       }
+
+       if(currentCell.value === CellValue.bomb){
+
+           ///
+       }else if (currentCell.value === CellValue.none){
+           newCells = openMultipleCells(newCells,rowParam,colParam);
+           setCells(newCells);
+       }else {
+           newCells[rowParam][colParam].state = CellState.visible;
+           setCells(newCells);
        }
     };
    const handleFaceClick  = () : void => {
