@@ -10,6 +10,7 @@ const App : React.FC = () => {
     const [face , setFace] = useState(Face.smile);
     const [time, setTime ] = useState<number>(0);
     const [live, setLive] = useState<boolean>(false);
+    const [bombCounter, setBombCounter] = useState<number>(10);
 
     useEffect(() => {
         const handleMouseDown = () => {
@@ -29,7 +30,7 @@ const App : React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if(live){
+        if(live && time <999){
             const timer = setInterval(() => {
                 setTime(time + 1);
 
@@ -72,6 +73,14 @@ const App : React.FC = () => {
        }else if(currentCell.state  === CellState.open){
         currentCells[rowParam][colParam].state = CellState.flagged;
         setCells(currentCells);
+        if(bombCounter > -99){
+            setBombCounter(bombCounter -1);
+        }
+       }else if(currentCell.state === CellState.flagged) {
+
+           currentCells[rowParam][colParam].state = CellState.open;
+           setCells(currentCell);
+           setBombCounter(bombCounter + 1);
        }
 
    };
@@ -93,8 +102,8 @@ const App : React.FC = () => {
     return (
        <div className = "App">
            <div className = "Header">
-               <NumberDisplay value = {0}/>
-               <div className = "Face" onclick={handleFaceClick}>
+               <NumberDisplay value = {bombCounter}/>
+               <div className = "Face" onClick={handleFaceClick}>
                      <span role="img" aria-label="face">
                    {face}
                      </span>
