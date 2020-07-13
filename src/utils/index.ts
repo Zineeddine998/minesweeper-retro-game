@@ -1,4 +1,4 @@
-import {MAX_COLS, MAX_ROW, NO_OF_BOMBS} from "../constants";
+import {MAX_COLS, MAX_ROWS, NO_OF_BOMBS} from "../constants";
 import {Cell, CellState, CellValue} from "../types"
 
 const grabAllAdjacentCells = (
@@ -26,13 +26,13 @@ const grabAllAdjacentCells = (
     const rightCell =
         colParam < MAX_COLS - 1 ? cells[rowParam][colParam + 1] : null;
     const bottomLeftCell =
-        rowParam < MAX_ROW - 1 && colParam > 0
+        rowParam < MAX_ROWS - 1 && colParam > 0
             ? cells[rowParam + 1][colParam - 1]
             : null;
     const bottomCell =
-        rowParam < MAX_ROW - 1 ? cells[rowParam + 1][colParam] : null;
+        rowParam < MAX_ROWS - 1 ? cells[rowParam + 1][colParam] : null;
     const bottomRightCell =
-        rowParam < MAX_ROW - 1 && colParam < MAX_COLS - 1
+        rowParam < MAX_ROWS - 1 && colParam < MAX_COLS - 1
             ? cells[rowParam + 1][colParam + 1]
             : null;
 
@@ -50,7 +50,7 @@ const grabAllAdjacentCells = (
 export const generateCells = (): Cell[][]  => {
     let  cells : Cell[][] = [];
 
-    for( let row = 0; row < MAX_ROW; row++ ) {
+    for( let row = 0; row < MAX_ROWS; row++ ) {
         cells.push([]);
         for(let col = 0; col < MAX_COLS; col++){
             cells[row].push({
@@ -63,7 +63,7 @@ export const generateCells = (): Cell[][]  => {
 
     let bombsPlaced = 0;
     while(bombsPlaced < NO_OF_BOMBS){
-       const randomRow = Math.floor(Math.random()*MAX_ROW);
+       const randomRow = Math.floor(Math.random()*MAX_ROWS);
        const randomCol = Math.floor(Math.random()*MAX_COLS);
        const currentCell = cells[randomRow][randomCol];
        if(currentCell.value !== CellValue.bomb){
@@ -81,7 +81,7 @@ export const generateCells = (): Cell[][]  => {
     }
 
     //
-   for(let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
+   for(let rowIndex = 0; rowIndex < MAX_ROWS; rowIndex++) {
        for(let colIndex = 0; colIndex < MAX_COLS; colIndex++) {
            const currentCell = cells[rowIndex][colIndex];
            if(currentCell.value === CellValue.bomb){
@@ -93,9 +93,9 @@ export const generateCells = (): Cell[][]  => {
            const topRightBomb = rowIndex > 0 && colIndex < MAX_COLS - 1 ? cells[rowIndex - 1][colIndex + 1] : null;
            const leftBomb = colIndex >0 ? cells[rowIndex][colIndex -1] : null;
            const rightBomb = colIndex < MAX_COLS - 1 ? cells[rowIndex][colIndex + 1] : null;
-           const bottomLeftBomb =  rowIndex < MAX_ROW -1 && colIndex > 0 ? cells[rowIndex + 1][colIndex -1] : null;
-           const bottomBomb = rowIndex < MAX_ROW -1 ? cells[rowIndex + 1][colIndex] : null;
-           const  bottomRightBomb = rowIndex < MAX_ROW -1 &&  colIndex < MAX_COLS -1 ? cells[rowIndex + 1][colIndex + 1] : null;
+           const bottomLeftBomb =  rowIndex < MAX_ROWS -1 && colIndex > 0 ? cells[rowIndex + 1][colIndex -1] : null;
+           const bottomBomb = rowIndex < MAX_ROWS -1 ? cells[rowIndex + 1][colIndex] : null;
+           const  bottomRightBomb = rowIndex < MAX_ROWS -1 &&  colIndex < MAX_COLS -1 ? cells[rowIndex + 1][colIndex + 1] : null;
 
 
 
