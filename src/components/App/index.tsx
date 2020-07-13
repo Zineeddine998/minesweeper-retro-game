@@ -3,7 +3,8 @@ import './App.scss'
 import NumberDisplay from '../NumberDsiplay';
 import {generateCells, openMultipleCells} from "../../utils";
 import Button from '../Button/index'
-import {Face, Cell , CellState, CellValue} from '../../types'
+import {Cell, CellState, CellValue, Face} from '../../types'
+
 const App : React.FC = () => {
 
     const [cells, setCells] = useState<Cell[][]>(generateCells());
@@ -11,6 +12,7 @@ const App : React.FC = () => {
     const [time, setTime ] = useState<number>(0);
     const [live, setLive] = useState<boolean>(false);
     const [bombCounter, setBombCounter] = useState<number>(10);
+    const [hasLost , setHasLost] = useState<boolean>(false);
 
     useEffect(() => {
         const handleMouseDown = () => {
@@ -41,6 +43,13 @@ const App : React.FC = () => {
         }
     }, [live, time]);
 
+    useEffect(() => {
+        if(hasLost){
+            setFace(Face.lost);
+            setLive(false);
+        }
+    });
+
     const handleCellClick = (rowParam : number, colParam : number) =>  () : void =>{
        if(!live) {
            setLive(true);
@@ -56,8 +65,11 @@ const App : React.FC = () => {
        }
 
        if(currentCell.value === CellValue.bomb){
-
-           ///
+           setHasLost(true);
+           newCells[rowParam][colParam].red =true;
+           newCells = showAllBombs();
+           setCells(newCells);
+           /// ne marche pas
        }else if (currentCell.value === CellValue.none){
            newCells = openMultipleCells(newCells,rowParam,colParam);
            setCells(newCells);
@@ -65,6 +77,25 @@ const App : React.FC = () => {
            newCells[rowParam][colParam].state = CellState.visible;
            setCells(newCells);
        }
+    };
+
+    const showAllBombs = () : Cell[][] => {
+        const currentCell = cells.slice();
+
+        return currentCell.map( row =>
+            row.map(cell  => {
+            if(cell.value == CellValue.bomb){
+                return {
+                    ...cell,
+                    state : CellState.visible
+                };
+            }
+
+            return cell;
+        })
+
+        );
+
     };
    const handleFaceClick  = () : void => {
        if(live){
@@ -112,8 +143,11 @@ const App : React.FC = () => {
                         row={rowIndex}
                         col={colIndex}
                         state={cell.state}
+                        value={cell.value}
+                        red = {cell.red}
                         onclick={handleCellClick}
                         onContext={handleCellContext}
+
                 />
             ))
     );
