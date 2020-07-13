@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Button from "../Button";
 import NumberDisplay from "../NumberDsiplay";
 import { generateCells, openMultipleCells } from "../../utils";
@@ -26,7 +25,7 @@ const App: React.FC = () => {
             setFace(Face.smile);
         };
 
-        window.addEventListener("mousedown", handleMouseDown);
+          window.addEventListener("mousedown", handleMouseDown);
         window.addEventListener("mouseup", handleMouseUp);
 
         return () => {
@@ -38,7 +37,7 @@ const App: React.FC = () => {
     useEffect(() => {
         if (live && time < 999) {
             const timer = setInterval(() => {
-                setTime(time + 1);
+                   setTime(time + 1);
             }, 1000);
 
             return () => {
@@ -64,7 +63,7 @@ const App: React.FC = () => {
     const handleCellClick = (rowParam: number, colParam: number) => (): void => {
         let newCells = cells.slice();
 
-        // start the game
+        ////////
         if (!live) {
             let isABomb = newCells[rowParam][colParam].value === CellValue.bomb;
             while (isABomb) {
@@ -83,6 +82,9 @@ const App: React.FC = () => {
             return;
         }
 
+        
+        
+        
         if (currentCell.value === CellValue.bomb) {
             setHasLost(true);
             newCells[rowParam][colParam].red = true;
@@ -114,7 +116,7 @@ const App: React.FC = () => {
         if (!safeOpenCellsExists) {
             newCells = newCells.map(row =>
                 row.map(cell => {
-                    if (cell.value === CellValue.bomb) {
+                            if (cell.value === CellValue.bomb) {
                         return {
                             ...cell,
                             state: CellState.flagged
